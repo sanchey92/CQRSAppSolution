@@ -1,3 +1,4 @@
+using API.Middleware;
 using Application;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -22,8 +23,8 @@ namespace API
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment()) app.UseDeveloperExceptionPage();
-
+            app.UseMiddleware<ExceptionMiddleware>();
+            
             app.UseRouting();
 
             app.UseEndpoints(endpoints => endpoints.MapControllers());

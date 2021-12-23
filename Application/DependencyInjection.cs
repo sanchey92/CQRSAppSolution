@@ -1,6 +1,7 @@
 using System.Reflection;
+using Application.Activities.Commands.CreateActivity;
 using Application.Core;
-using FluentValidation;
+using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,9 +12,9 @@ namespace Application
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
             services.AddMediatR(Assembly.GetExecutingAssembly());
-            services.AddValidatorsFromAssemblies(new[] {Assembly.GetExecutingAssembly()});
-            services.AddTransient(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
             services.AddAutoMapper(typeof(MappingProfiles).Assembly);
+            services.AddFluentValidation(config =>
+                config.RegisterValidatorsFromAssemblyContaining<CreateActivityCommandValidator>());
             return services;
         }
     }
