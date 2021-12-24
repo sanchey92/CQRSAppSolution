@@ -9,14 +9,14 @@ using Microsoft.Extensions.Logging;
 
 namespace API.Middleware
 {
-    public class ExceptionMiddleware
+    public class ExceptionMiddlewareHandler
     {
         private readonly RequestDelegate _next;
-        private readonly ILogger<ExceptionMiddleware> _logger;
+        private readonly ILogger<ExceptionMiddlewareHandler> _logger;
         private readonly IHostEnvironment _environment;
 
-        public ExceptionMiddleware(RequestDelegate next, 
-            ILogger<ExceptionMiddleware> logger, IHostEnvironment environment)
+        public ExceptionMiddlewareHandler(RequestDelegate next, 
+            ILogger<ExceptionMiddlewareHandler> logger, IHostEnvironment environment)
             => (_next, _logger, _environment) = (next, logger, environment);
 
         public async Task InvokeAsync(HttpContext context)
@@ -43,4 +43,5 @@ namespace API.Middleware
             }
         }
     }
+    
 }
