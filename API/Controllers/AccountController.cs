@@ -39,6 +39,28 @@ namespace API.Controllers
             return Unauthorized();
         }
 
+        [HttpPost("register")]
+        public async Task<ActionResult<UserDto>> RegisterUser(RegisterDto registerDto)
+        {
+            if (await _userManager.Users.AnyAsync(x => x.Email == registerDto.Email) ||
+                await _userManager.Users.AnyAsync(x => x.UserName == registerDto.Username))
+            {
+                return BadRequest("Please try again! This username or email already exists");
+            }
+
+            var newUser = new AppUser
+            {
+                DisplayName = registerDto.DisplayName,
+                Email = registerDto.Email,
+                UserName = registerDto.Username
+            };
+
+            var result = await _userManager.CreateAsync(newUser, registerDto.Password);
+            if (result.Succeeded) return CreateUserDto(newUser);
+
+            return BadRequest("Problem registering User");
+        }
+
         [Authorize]
         [HttpGet]
         public async Task<ActionResult<UserDto>> GetCurrentUser()
@@ -48,6 +70,7 @@ namespace API.Controllers
 
             return CreateUserDto(user);
         }
+        
 
         private UserDto CreateUserDto(AppUser user)
         {
