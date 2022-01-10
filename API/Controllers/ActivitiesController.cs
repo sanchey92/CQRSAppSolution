@@ -5,7 +5,9 @@ using Application.Activities.Commands.DeleteActivity;
 using Application.Activities.Commands.EditActivity;
 using Application.Activities.Queries;
 using Application.Activities.Queries.GetActivityDetails;
+using Application.Attendance.Commands.UpdateAttendance;
 using Domain;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace API.Controllers
@@ -30,6 +32,7 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new CreateActivityCommand {Activity = activity}));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
         public async Task<IActionResult> EditEntity(Guid id, Activity activity)
         {
@@ -37,10 +40,17 @@ namespace API.Controllers
             return HandleResult(await Mediator.Send(new EditActivityCommand {Activity = activity}));
         }
 
+        [Authorize(Policy = "IsActivityHost")]
         [HttpDelete("{id}")]
         public async Task<IActionResult> DeleteActivity(Guid id)
         {
             return HandleResult(await Mediator.Send(new DeleteActivityCommand {Id = id}));
+        }
+
+        [HttpPost("{id}/attend")]
+        public async Task<IActionResult> Attend(Guid id)
+        {
+            return HandleResult(await Mediator.Send(new UpdateAttendanceCommand {Id = id}));
         }
     }
 }

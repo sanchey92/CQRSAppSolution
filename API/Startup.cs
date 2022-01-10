@@ -1,6 +1,8 @@
 using API.Extensions;
 using API.Middleware;
 using Application;
+using Application.Interfaces;
+using Infrastructure.Security;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
@@ -26,6 +28,7 @@ namespace API
             services.AddApplication();
             services.AddPersistence(Configuration);
             services.AddIdentityServices(Configuration);
+            services.AddScoped<IUserAccessor, UserAccessor>();
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
