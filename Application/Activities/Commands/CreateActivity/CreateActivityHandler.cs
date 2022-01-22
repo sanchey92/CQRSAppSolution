@@ -35,9 +35,9 @@ namespace Application.Activities.Commands.CreateActivity
             
             var result = await _context.SaveChangesAsync(cancellationToken) > 0;
 
-            if (!result) return Result<Unit>.Failure("Failed to create activity");
-
-            return Result<Unit>.Success(Unit.Value);
+            return !result 
+                ? Result<Unit>.Failure("Failed to create activity") 
+                : Result<Unit>.Success(Unit.Value);
         }
     }
 }
