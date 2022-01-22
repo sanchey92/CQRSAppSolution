@@ -16,21 +16,15 @@ namespace API.Controllers
     {
         [HttpGet]
         public async Task<IActionResult> GetActivities()
-        {
-            return HandleResult(await Mediator.Send(new GetActivityListQuery()));
-        }
+            => HandleResult(await Mediator.Send(new GetActivityListQuery()));
 
         [HttpGet("{id}")]
         public async Task<IActionResult> GetActivityById(Guid id)
-        {
-            return HandleResult(await Mediator.Send(new GetActivityDetailsQuery {Id = id}));
-        }
+            => HandleResult(await Mediator.Send(new GetActivityDetailsQuery {Id = id}));
 
         [HttpPost]
         public async Task<IActionResult> CreateActivity(Activity activity)
-        {
-            return HandleResult(await Mediator.Send(new CreateActivityCommand {Activity = activity}));
-        }
+            => HandleResult(await Mediator.Send(new CreateActivityCommand {Activity = activity}));
 
         [Authorize(Policy = "IsActivityHost")]
         [HttpPut("{id}")]
